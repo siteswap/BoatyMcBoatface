@@ -3,6 +3,7 @@ library(ggplot2)
 library(gridExtra)
 library(zoo)
 library(plyr)
+library(grid)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -24,7 +25,8 @@ shinyServer(function(input, output) {
   INCUBATION_TIME <- 200
   d$reqLenKm <- 3.6*d$meanFlow*INCUBATION_TIME
   
-
+  warnMsg <- textGrob("no risk", gp = gpar(fontsize = 50))
+  
   output$distPlot <- renderPlot({
     
     t0 <- strptime("2015-01-01 00:00", "%Y-%m-%d %H:%M", tz="EST")
@@ -38,8 +40,14 @@ shinyServer(function(input, output) {
     gddline <- ggplot(dwin,aes(x=date,y=cgdd)) + ylim(0, 1000) + geom_line() + 
       geom_hline(yintercept = 650, linetype="dashed" ) + 
       geom_hline(yintercept = 900, linetype="dashed" )
-    reqLen <- ggplot(dwin,aes(x=date,y=reqLenKm)) + geom_bar(stat = "identity", fill = "green", colour = "black")
-    grid.arrange( temperature, gddline, speed, reqLen, ncol=2 )
+    #reqLen <- ggplot(dwin,aes(x=date,y=reqLenKm)) + geom_bar(stat = "identity", fill = "green", colour = "black")
+    if ( tail(dwin$cgdd,n=1) > 650 ) {
+      warnMsg <- textGrob("Medium Risk", gp = gpar(fontsize = 100, col = "orange"))
+    } 
+    if ( tail(dwin$cgdd,n=1) > 900 ) {
+      warnMsg <- textGrob("HIGH RISK", gp = gpar(fontsize = 100, col = "red"))
+    } 
+    grid.arrange( temperature, gddline, speed, warnMsg, ncol=2 )
     
   })
 })
