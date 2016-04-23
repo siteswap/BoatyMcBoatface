@@ -2,6 +2,7 @@ library(shiny)
 library(ggplot2)
 library(gridExtra)
 library(zoo)
+library(plyr)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
