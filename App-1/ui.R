@@ -13,7 +13,7 @@ shinyUI(fluidPage(
       # Specification of range within an interval
       sliderInput("range", "Range:",
                   min = 0,
-                  max = 120,
+                  max = 365,
                   animate = TRUE,
                   value = c(0,30))
       
