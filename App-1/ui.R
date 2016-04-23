@@ -3,12 +3,13 @@ library(shiny)
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
-  # Application title
-  titlePanel("Minority Report for Carp"),
-
+  
   # Sidebar with a slider input for the number of bins
-  sidebarLayout(
-    sidebarPanel(
+  verticalLayout(
+    # Application title
+    titlePanel("Minority Report for Carp"),
+    plotOutput("distPlot", height = "1000px"),
+    wellPanel(
 
       # Specification of range within an interval
       sliderInput("range", "Range:",
@@ -17,11 +18,10 @@ shinyUI(fluidPage(
                   animate = TRUE,
                   value = c(0,30))
       
-    ),
-
-    # Show a plot of the generated distribution
-    mainPanel(
-      plotOutput("distPlot")
     )
+    #sidebarPanel("FUTURE CRIMINAL:", img(src = "C:/Users/Alex/git/BoatyMcBoatface/App-1/grasscarp_adult.jpg")),
+    # Show a plot of the generated distribution
+
   )
 ))
+
